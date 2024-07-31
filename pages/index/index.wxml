@@ -1,0 +1,9 @@
+<!--index.wxml-->
+<navigation-bar back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="container">
+    <button>
+      画画
+    </button>
+  </view>
+</scroll-view>

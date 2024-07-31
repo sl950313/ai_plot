@@ -1,0 +1,26 @@
+<view class="container">
+  <!-- 用户信息区域 -->
+  <view class="user-info">
+    <button class="avatar" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+      <image src="{{avatarUrl}}"></image>
+    </button>
+    <input type="nickname" class="nickname" placeholder="请输入昵称" bindblur="changeNickName"/>
+    <!-- <input
+    <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover" wx:if="{{hasUserInfo}}"></image>
+    <view class="nickname" wx:if="{{hasUserInfo}}">{{userInfo.nickName}}</view>
+    <button wx:if="{{!hasUserInfo}}" open-type="getUserProfile" bindgetuserinfo="getUserProfile">获取用户信息</button> -->
+  </view>
+
+  <!-- 功能选项区域 -->
+  <view class="options">
+    <navigator url="/pages/orders/orders" class="option">
+      <text>可使用次数</text>
+    </navigator>
+    <navigator url="/pages/settings/settings" class="option">
+      <text>反馈</text>
+    </navigator>
+    <navigator url="/pages/about/about" class="option">
+      <text>联系我们</text>
+    </navigator>
+  </view>
+</view>
