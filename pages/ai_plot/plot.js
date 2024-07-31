@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    inputVal: ""
   },
 
   /**
@@ -15,6 +15,16 @@ Page({
 
   },
 
+  getInputValue(e) {
+    console.log(e.detail)
+    this.setData({
+      inputVal: e.detail.value
+    })
+  },
+  
+  onclickGeneral : function() {
+    console.log("start general", this.data.inputVal);
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

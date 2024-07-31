@@ -1,9 +1,7 @@
 <!--pages/ai_plot/plot.wxml-->
 <view class="container">
   <view class="save_clear">
-    <view>
-      输入
-    </view>
-    <input class="input" name="remark" placeholder="请输入将要生成的语句" auto-focus="true"/>
+    <input class="input" bindinput="getInputValue" name="remark" placeholder="请输入将要生成的语句" auto-focus="true"/>
+    <button bind:tap="onclickGeneral">生成</button>
   </view>
 </view>
