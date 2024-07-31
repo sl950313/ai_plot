@@ -3,11 +3,12 @@
     "pages/index/index",
     "pages/draw/draw",
     "pages/ai_plot/plot",
-    "pages/self/self"
+    "pages/self/self",
+    "pages/draw/pic_draw"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationStyle": "custom"
+    "navigationStyle": "default"
   },
   "style": "v2",
   "renderer": "skyline",
@@ -35,12 +36,7 @@
         "iconPath": "icons/广场-暗.png",
         "selectedIconPath": "icons/广场-亮.png"
       },
-      {
-        "pagePath": "pages/draw/draw",
-        "text": "快乐绘画",
-        "iconPath": "icons/画图-暗.png",
-        "selectedIconPath": "icons/画图-亮.png"
-      },
+      
       {
         "pagePath": "pages/ai_plot/plot",
         "text": "ai绘画",
