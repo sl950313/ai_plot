@@ -1,12 +1,21 @@
-<!--index.wxml-->
-<!-- <navigation-bar back="{{false}}" color="black" background="#FFF"></navigation-bar> -->
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <button bind:tap="toNormalDraw">
-      画画
-    </button>
-    <button bind:tap="toPicDraw">
-      涂照片
-    </button>
+<!-- Hello World -->
+<view class="container">
+  <!-- <text> Hello World</text> -->
+  <view class="item-top"></view>
+  <view class="item" bindtap="toNormalDraw">
+    <text>画画</text>
   </view>
-</scroll-view>
+
+  <view class="item" bindtap="toPicDraw">
+    <text>涂照片</text>
+  </view>
+
+  <view class="item" bindtap="toFuncDraw">
+    <text>函数画图</text>
+  </view>
+
+  <view class="item" bindtap="toFuncDraw">
+    <text>绘制动画</text>
+  </view>
+
+</view>

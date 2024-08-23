@@ -59,7 +59,7 @@ Page({
   },
 
   touchmove: function (e) {
-    console.log("touchMove", " ctx", this.data.ctx);
+    console.log("touchMove", " ctx", this.data.ctx, " position", e.touches[0]);
     if (!this.data.isDrawing) return;
 
     const { ctx, startX, startY } = this.data;

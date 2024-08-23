@@ -6,13 +6,19 @@ Page({
 
   toNormalDraw: function() {
     wx.navigateTo({
-      url: '/pages/draw/draw',
+      url: '../draw/draw',
     });
   },
 
   toPicDraw: function() {
     wx.navigateTo({
-      url: '/pages/draw/pic_draw',
+      url: '../draw/pic_draw',
+    })
+  },
+
+  toFuncDraw: function() {
+    wx.navigateTo({
+      url: '../func_draw/func_draw',
     })
   },
 

@@ -1,18 +1,74 @@
-<view class="container">
+<view class="container more">
   <!-- 用户信息区域 -->
-  <view class="user-info">
+  <view class="user flex-wrp">
     <button class="avatar" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
       <image src="{{avatarUrl}}"></image>
     </button>
-    <input type="nickname" class="nickname" placeholder="请输入昵称" bindblur="changeNickName"/>
+    <view class="user-info flex-item">
+      <input type="nickname" class="nickname" placeholder="请输入昵称" bindblur="changeNickName"/>
+    </view>
+    
     <!-- <input
     <image class="avatar" src="{{userInfo.avatarUrl}}" mode="cover" wx:if="{{hasUserInfo}}"></image>
     <view class="nickname" wx:if="{{hasUserInfo}}">{{userInfo.nickName}}</view>
     <button wx:if="{{!hasUserInfo}}" open-type="getUserProfile" bindgetuserinfo="getUserProfile">获取用户信息</button> -->
   </view>
 
+  <view class="my">
+    
+    <view class="my-item flex-wrp">
+      <view class="myitem-icon flex-item" >
+        <image src="../../images/star.png"></image>
+      </view>
+      <view class="myitem-name flex-item">
+        <text>我的绘画</text>
+      </view>
+    </view>
+    <view class="my-item flex-wrp">
+      <view class="myitem-icon flex-item" >
+        <image src="../../images/draft.png"></image>
+      </view>
+      <view class="myitem-name flex-item">
+        <text>我的草稿</text>
+      </view>
+    </view>
+    <!-- <view class="my-item flex-wrp">
+      <view class="myitem-icon flex-item" >
+        <image src="../../images/recent.png"></image>
+      </view>
+      <view class="myitem-name flex-item">
+        <text>最近浏览</text>
+      </view>
+    </view> -->
+    <view class="my-item flex-wrp">
+      <view class="myitem-icon flex-item" >
+        <image src="../../images/book.png"></image>
+      </view>
+      <view class="myitem-name flex-item">
+        <text>我的钱包</text>
+      </view>
+    </view>
+    <view class="my-item flex-wrp">
+      <view class="myitem-icon flex-item" >
+        <image src="../../images/live.png"></image>
+      </view>
+      <view class="myitem-name flex-item">
+        <text>问题反馈</text>
+      </view>
+    </view>
+    <view class="my-item flex-wrp">
+      <view class="myitem-icon flex-item" >
+        <image src="../../images/zhi.png"></image>
+      </view>
+      <view class="myitem-name flex-item">
+        <text>联系我们</text>
+      </view>
+    </view>
+
+  </view>
+
   <!-- 功能选项区域 -->
-  <view class="options">
+  <!-- <view class="options">
     <navigator url="/pages/orders/orders" class="option">
       <text>可使用次数</text>
     </navigator>
@@ -22,5 +78,5 @@
     <navigator url="/pages/about/about" class="option">
       <text>联系我们</text>
     </navigator>
-  </view>
+  </view> -->
 </view>
