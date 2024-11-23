@@ -14,8 +14,11 @@
     <text>函数画图</text>
   </view>
 
-  <view class="item" bindtap="toFuncDraw">
+  <view class="item" bindtap="toAIDraw">
     <text>绘制动画</text>
   </view>
 
+  <view class="item" bindtap="toAIDraw">
+    <text>ai绘画</text>
+  </view>
 </view>

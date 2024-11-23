@@ -1,1 +1,7 @@
 /* pages/draw/pic_draw.wxss */
+
+.pic_canvas_style {
+  height: 500px;
+  width: 100%;
+  border: 3px solid ;
+}

@@ -22,6 +22,12 @@ Page({
     })
   },
 
+  toAIDraw: function() {
+    wx.navigateTo({
+      url: '../ai_plot/plot',
+    })
+  },
+
   onLoad: function () {
     // const ctx = wx.createCanvasContext('myCanvas');
     // this.setData({ ctx });

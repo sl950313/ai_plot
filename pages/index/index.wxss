@@ -1,23 +1,39 @@
-/* .container{
+/* 整体容器设置（可选） */
+.container {
   height: 100%;
   width: 100%;
-} */
-.item-top{
-  width:auto;
-  height: 100px;
-}
-.item{
-  width: auto;
-  height: 50px;
-  background: #888;
-  font-size: 28px;
-  color: rgba(255, 0, 0, 0.56);
-  box-shadow: 0 2px 2px #bebebe;
-  margin: 0 0 8px 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
 }
 
-.top-tab{
+.item-top {
+  width: auto;
+  height: 100px;
+}
+
+.item {
+  width: 90%;
+  height: 50px;
+  background: #4A90E2; /* 更现代的蓝色 */
+  font-size: 28rpx;
+  color: #ffffff; /* 提高对比度 */
+  border-radius: 8rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 16rpx;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.item:hover {
+  background: #357ABD; /* 悬停效果 */
+}
+
+.top-tab {
   width: 750rpx;
   height: 100rpx;
   background: #298DE5;
@@ -25,23 +41,26 @@
   font-size: 28rpx;
   line-height: 100rpx;
   box-shadow: 0 2px 2px #bebebe;
-  margin: 0 0 8rpx 0;
+  margin-bottom: 8rpx;
   z-index: 9999;
 }
 
-.toptab.active{
+.toptab.active {
   color: #ffffff;
-  border-bottom: solid 2px #ffffff;
+  border-bottom: solid 2rpx #ffffff;
 }
-.activity{
+
+.activity {
   width: 750rpx;
   height: 375rpx;
 }
-.activity image{
-  width: 750rpx;
-  height: 375rpx;
+
+.activity image {
+  width: 100%; /* 自动适应父容器宽度 */
+  height: auto; /* 保持图像比例 */
 }
-.placehold{
+
+.placehold {
   font-size: 28rpx;
   padding: 80rpx 0;
 }

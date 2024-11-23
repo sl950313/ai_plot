@@ -4,6 +4,8 @@
     "pages/draw/draw",
     "pages/ai_plot/plot",
     "pages/self/self",
+    "pages/self/infos/contact",
+    "pages/self/infos/feedback",
     "pages/draw/pic_draw",
     "pages/func_draw/func_draw"
   ],
@@ -15,15 +17,7 @@
     "enablePullDownRefresh":true
   },
   "style": "v2",
-  "renderer": "skyline",
-  "rendererOptions": {
-    "skyline": {
-      "defaultDisplayBlock": true,
-      "disableABTest": true,
-      "sdkVersionBegin": "3.0.0",
-      "sdkVersionEnd": "15.255.255"
-    }
-  },
+  
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
@@ -45,12 +39,6 @@
         "selectedIconPath": "icons/广场-亮.png"
       },
       
-      {
-        "pagePath": "pages/ai_plot/plot",
-        "text": "",
-        "iconPath": "icons/ai-暗.png",
-        "selectedIconPath": "icons/ai-亮.png"
-      },
       {
         "pagePath": "pages/self/self",
         "text": "",
