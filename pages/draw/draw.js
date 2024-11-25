@@ -1,20 +1,28 @@
 Page({
   data: {
     brushColor: '#000000', // 默认画笔颜色
+    redValue: 0,
+    greenValue: 0,
+    blueValue: 0,
+    boxColor: '#000000',
     brushWidth: 5, // 默认画笔宽度
     showColor: false, // 控制颜色选择器的显示
     showWidth: false, // 控制宽度选择器的显示
     ctx: null,
+    width: null,
+    height: null,
     canvas: null,
+    picPath: null,
     isDrawing: false,
     startX: 0,
     startY: 0,
     showBrushOptions: true,
     settingBrushWidth: false,
     settingBrushColor: false,
+    canvasHistory: [],
     // setting
-    colorOptions: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff'], // 颜色选项
-    widthOptions: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 20] // 画笔宽度选项
+    colorOptions: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#ffffff', '#000000'] // 颜色选项
+    // widthOptions: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 20] // 画笔宽度选项
     // brushColor: '#000000'
     // brushWidth: 5
   },
@@ -48,6 +56,35 @@ Page({
     if (brushColorOpen) {
       this.setData({ settingBrushWidth: false });
     }
+  },
+
+  onRedColorChange(e) {
+    const red = e.detail.value;
+    console.log("onRedColorChange red:", red, "e,", e)
+    this.setData({ redValue: red });
+    this.setBoxColor();
+  },
+
+  onBlueColorChange(e) {
+    const blue = e.detail.value;
+    this.setData({ blueValue: blue });
+    this.setBoxColor();
+  },
+
+  onGreenColorChange(e) {
+    const green = e.detail.value;
+    this.setData({ greenValue: green });
+    this.setBoxColor();
+  },
+
+  setBoxColor: function() {
+    const r = this.data.redValue / 100.0 * 256;
+    const g = this.data.greenValue / 100.0 * 256;
+    const b = this.data.blueValue / 100.0 * 256;
+    this.setData({
+      brushColor: `rgb(${r}, ${g}, ${b})` 
+    });
+    console.log("r:", r, "g", g, "b", b, "redValue:", this.data.redValue, "greenValue:", this.data.greenValue, "blueValue:", this.data.blueValue);
   },
 
   onBrushWidthChange(e) {
@@ -108,6 +145,10 @@ Page({
         // Canvas 画布的实际绘制宽高
         const width = res[0].width
         const height = res[0].height
+        this.setData({
+          width: width,
+          height: height
+        });
 
         // 初始化画布大小
         const dpr = wx.getWindowInfo().pixelRatio
@@ -160,7 +201,10 @@ Page({
       startX: e.touches[0].x,
       startY: e.touches[0].y
     });
-    const { ctx, startX, startY } = this.data;
+    const { ctx, startX, startY, brushColor, brushWidth } = this.data;
+    let currentX = startX;
+    let currentY = startY;
+    this.currentPath = [{currentX, currentY, brushColor, brushWidth}];
     // const ctx = wx.createCanvasContext('myCanvas', this);
     // ctx.setStrokeStyle(this.data.brushColor);
     // ctx.setLineWidth(this.data.brushWidth);
@@ -172,19 +216,21 @@ Page({
 
     ctx.beginPath();
 
-    console.log("startX:", this.data.startX, " startY:", this.data.startY)
+    console.log("startX:", this.data.startX, " startY:", this.data.startY, this.data.brushColor, this.data.brushWidth)
   },
 
   touchmove: function (e) {
     // e.preventDefault(); // 阻止默认行为
     // e.stopPropagation(); // 阻止事件冒泡
 
-    console.log("touchMove", " ctx", this.data.ctx, " position", e.touches[0]);
+    console.log("touchMove", " ctx", this.data.ctx, " position", e.touches[0], this.data.brushColor, this.data.brushWidth);
     if (!this.data.isDrawing) return;
 
-    const { ctx, startX, startY } = this.data;
+    const { ctx, startX, startY, brushColor, brushWidth } = this.data;
     const currentX = e.touches[0].x;
     const currentY = e.touches[0].y;
+
+    this.currentPath.push({ currentX, currentY, brushColor, brushWidth });
 
     ctx.strokeStyle = this.data.brushColor;
     // ctx.setFillStyle(this.data.brushColor);
@@ -210,10 +256,131 @@ Page({
     // e.preventDefault(); // 阻止默认行为
     // e.stopPropagation(); // 阻止事件冒泡
 
-    console.log("touchEnd")
+    console.log("touchEnd", this.data.brushColor, this.data.brushWidth);
     this.setData({
       isDrawing: false
     });
+
+    if (this.currentPath && this.currentPath.length > 0) {
+      const newHistory = [...this.data.canvasHistory, this.currentPath];
+      this.setData({
+        canvasHistory: newHistory,
+        // isDrawing: false,
+      });
+    }
+    console.log("canvashistory size:", this.data.canvasHistory);
+  },
+
+  sleep: function(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
+
+  undo: function() {
+    console.log("undo");
+    if (this.data.canvasHistory.length === 0) return;
+
+    // 移除最后一条路径
+    const newHistory = this.data.canvasHistory.slice(0, -1);
+    this.setData({
+      canvasHistory: newHistory,
+    });
+    console.log("canvashistory size:", this.data.canvasHistory);
+
+    const { ctx, startX, startY } = this.data;
+    ctx.clearRect(0, 0, this.data.width, this.data.height);
+
+    console.log("clear ok");
+    // for (var i = 0; i < 1000000; ++i) {
+    //   //
+    // }
+
+    // await sleep(1000);
+
+    this.loadImageToCanvas(this.data.picPath);
+
+    for (const path of newHistory) {
+      console.log("path:", path);
+      for (let i = 1; i < path.length; i++) {
+        ctx.lineWidth = path[i - 1].brushWidth;
+        ctx.brushColor = path[i - 1].brushColor;
+        ctx.strokeStype = path[i - 1].brushColor;
+        ctx.beginPath();
+        
+        ctx.moveTo(path[i - 1].currentX, path[i - 1].currentY);
+        ctx.lineTo(path[i].currentX, path[i].currentY);      
+        // console.log(path[i - 1].currentX, path[i - 1].currentY, " to ", path[i].currentX, path[i].currentY);
+        ctx.stroke();
+      }
+      // console.log("final", path[0].currentX, path[0].currentY, "to", path[path.length - 1].currentX, path[path.length - 1].currentY);
+    }
+  },
+
+  loadImg: function() {
+    wx.chooseImage({
+      count: 1,
+      sizeType: ["original", "compressed"],
+      sourceType: ["album", "camera"],
+      success: (res) => {
+        const tempFilePath = res.tempFilePaths[0]; // 获取临时文件路径
+        this.loadImageToCanvas(tempFilePath);
+        this.setData({
+          picPath: tempFilePath
+        });
+      },
+      fail: (err) => {
+        console.error("选择图片失败：", err);
+      },
+    });
+  },
+
+  loadImageToCanvas: function(imagePath) {
+    console.log("loadImageToCanvas");
+    const { canvas, ctx } = this.data;
+
+    const img = canvas.createImage();
+    img.src = imagePath;
+
+    img.onload = () => {
+      // 将图片绘制到 Canvas 上
+      const imgWidth = img.width;
+      const imgHeight = img.height;
+      const canvasWidth = this.data.width;
+      const canvasHeight = this.data.height;
+      console.log("img onload", imgWidth, imgHeight, canvasWidth, canvasHeight);
+
+      const scaleX = canvasWidth / imgWidth;
+      const scaleY = canvasHeight / imgHeight;
+      const scale = Math.min(scaleX, scaleY); // 保证图片完整显示
+
+      // 计算图片在 Canvas 上的显示区域
+      const displayWidth = imgWidth * scale;
+      const displayHeight = imgHeight * scale;
+
+      const offsetX = (canvasWidth - displayWidth) / 2; // 居中显示
+      const offsetY = (canvasHeight - displayHeight) / 2;
+      console.log("drawImage", offsetX, offsetY, displayWidth, displayHeight, scale);
+
+      ctx.drawImage(img, offsetX, offsetY, displayWidth, displayHeight);
+      // ctx.drawImage(img, 0, 0);
+    };
+
+    img.onerror = (err) => {
+      console.error("图片加载失败：", err);
+    };
+  },
+
+  loadImg2: function() {
+    let canvas = this.data.canvas;
+    let ctx = this.data.ctx;
+    const img = canvas.createImage();
+    console.log(ctx, canvas, img);
+    img.onLoad = () => {
+      ctx.drawImage(img, 0, 0);
+      console.log("Here onLoad");
+    }
+    img.src = "https://img2.baidu.com/it/u=1208038369,1789115807&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=667";
+    console.log("img.src:");
+    ctx.drawImage(img, 0, 0);
   },
 
   clearCanvas: function () {

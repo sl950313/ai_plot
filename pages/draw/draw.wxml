@@ -8,10 +8,15 @@
     hidden="{{!settingBrushColor}}">
     <!-- 颜色选择 -->
     <view class="options-section">
-      <text style="font-size: 10px;">颜色:</text>
-      <view class="color-options">
-        <view wx:for="{{colorOptions}}" wx:key="color" data-color="{{item}}" class="color-circle" style="background-color: {{item}}" bindtap="selectColor"></view>
-      </view>
+      <text style="font-size: 10px;">画笔样式:</text>
+      <view class="gradient-bar" style="background-color: {{brushColor}}; height: {{brushWidth}}px;"></view>
+
+      <text style="font-size: 10px;">红:</text>
+      <slider min="0" max="100" step="1" activeColor="#FF0000" value="{{redValue}}" show-value="false" bindchange="onRedColorChange" class="color-slider" />
+      <text style="font-size: 10px;">绿:</text>
+      <slider min="0" max="100" step="1" activeColor="#00FF00" value="{{blueValue}}" show-value="false" bindchange="onBlueColorChange" class="color-slider" />
+      <text style="font-size: 10px;">蓝:</text>
+      <slider min="0" max="100" step="1" activeColor="#0000FF" value="{{greenValue}}" show-value="false" bindchange="onGreenColorChange" class="color-slider" />
     </view>
   </view>
   
@@ -19,18 +24,23 @@
     class="draggable-popup" 
     style="top: {{popupTop}}px; left: {{popupLeft}}px;" 
     hidden="{{!settingBrushWidth}}">
+    <text style="font-size: 10px;">画笔样式:</text>
+    <view class="gradient-bar" style="background-color: {{brushColor}}; height: {{brushWidth}}px;"></view>
     <!-- 宽度选择 -->
     <view class="brush-width">
       <text style="font-size: 10px;">画笔宽度：</text>
-      <slider style="width: 481rpx; height: 18rpx; display: block; box-sizing: border-box" min="1" max="30" step="1" value="{{brushWidth}}" bindchange="onBrushWidthChange" />
+      <slider style="width: 481rpx; height: 18rpx; display: block; box-sizing: border-box" activeColor="#000"  min="1" max="10" step="1" value="{{brushWidth}}" bindchange="onBrushWidthChange" />
       <text style="font-size: 10px;">{{brushWidth}} px</text>
     </view>
   </view>
   <view class="canvas_tools">
-    <button bind:tap="saveImg" >保存</button>
-    <button bind:tap="clearCanvas" >清空</button>
-    <button bind:tap="setBrushWidth" >画笔</button>
-    <button bind:tap="setBrushColor" >颜色</button>
+    <button bind:tap="saveImg" class='width-button'>保存</button>
+    <button bind:tap="clearCanvas" class='width-button'>清空</button>
+    <button bind:tap="setBrushWidth" class='width-button'>画笔</button>
+    <button bind:tap="setBrushColor" class='width-button'>颜色</button>
+    <button bind:tap="undo" class='width-button'>撤回</button>
+    <!-- <button bind:tap="eraser" class='width-button'>橡皮</button> -->
+    <button bind:tap="loadImg" class='width-button'>涂鸦图片</button>
   </view>
 
 
