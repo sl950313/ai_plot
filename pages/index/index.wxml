@@ -6,11 +6,13 @@
     <text>画画</text>
   </view>
 
+<!-- 
   <view class="item" bindtap="toPicDraw">
     <text>涂照片</text>
-  </view>
+  </view> -->
 
-  <view class="item" bindtap="toFuncDraw">
+  <!-- <view class="item" bindtap="toFuncDraw"> -->
+  <view class="item" bindtap="toAIDraw">
     <text>函数画图</text>
   </view>
 

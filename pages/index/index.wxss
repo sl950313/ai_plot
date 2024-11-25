@@ -1,66 +1,95 @@
-/* 整体容器设置（可选） */
+/* 整体容器设置 */
 .container {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 20rpx;
+  background: linear-gradient(to bottom, #f0f4f8, #d9e8f5); /* 添加渐变背景 */
 }
 
+/* 顶部间距 */
 .item-top {
   width: auto;
   height: 100px;
 }
 
+/* 按钮样式 */
 .item {
   width: 90%;
-  height: 50px;
-  background: #4A90E2; /* 更现代的蓝色 */
-  font-size: 28rpx;
-  color: #ffffff; /* 提高对比度 */
-  border-radius: 8rpx;
-  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1);
-  margin-bottom: 16rpx;
+  height: 70px; /* 调整按钮高度，增加视觉重量 */
+  background: linear-gradient(135deg, #4A90E2, #6EC6FF); /* 按钮渐变背景 */
+  font-size: 30rpx; /* 字体略大，视觉更显眼 */
+  font-weight: bold; /* 字体加粗 */
+  color: #ffffff;
+  border-radius: 12rpx; /* 更明显的圆角 */
+  box-shadow: 0 6rpx 12rpx rgba(0, 0, 0, 0.1); /* 优化按钮阴影 */
+  margin-bottom: 20rpx;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s;
+  transition: transform 0.2s, background 0.3s; /* 添加交互过渡效果 */
+  cursor: pointer;
 }
 
-.item:hover {
-  background: #357ABD; /* 悬停效果 */
+/* 按钮悬停效果 */
+.item:active {
+  background: linear-gradient(135deg, #357ABD, #5FA5E6); /* 悬停时更深的渐变 */
+  transform: scale(0.98); /* 按钮按下的微小缩放效果 */
 }
 
+/* 标题标签样式 */
 .top-tab {
   width: 750rpx;
   height: 100rpx;
   background: #298DE5;
-  color: #8CCEFD;
-  font-size: 28rpx;
-  line-height: 100rpx;
-  box-shadow: 0 2px 2px #bebebe;
-  margin-bottom: 8rpx;
-  z-index: 9999;
-}
-
-.toptab.active {
   color: #ffffff;
-  border-bottom: solid 2rpx #ffffff;
+  font-size: 32rpx;
+  font-weight: bold;
+  line-height: 100rpx;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 微妙阴影 */
+  margin-bottom: 20rpx;
+  border-radius: 8rpx; /* 增加圆角 */
+  text-align: center;
 }
 
+/* 活动区域样式 */
 .activity {
-  width: 750rpx;
-  height: 375rpx;
+  width: 90%;
+  margin: 20rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .activity image {
-  width: 100%; /* 自动适应父容器宽度 */
-  height: auto; /* 保持图像比例 */
+  width: 100%;
+  height: auto;
+  border-radius: 12rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.1); /* 图片阴影效果 */
 }
 
+/* 占位文本样式 */
 .placehold {
   font-size: 28rpx;
+  color: #999999;
   padding: 80rpx 0;
+  text-align: center;
+}
+
+/* 添加更多动画效果 */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.item:hover {
+  animation: bounce 0.5s infinite; /* 悬停时轻微弹跳动画 */
 }
