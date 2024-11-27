@@ -12,6 +12,9 @@ Page({
     startY: 0,
     width: 0,
     height: 0,
+    functionList: ['sin(x)', 'cos(x)', 'tan(x)', 'log(x)', 'exp(x)', 'x^2', 'x^3', '自定义'], // 固定函数 + 自定义选项
+    selectedFunction: '', // 用户选择的函数
+    customExpression: '', // 用户自定义表达式
   },
 
   /**
@@ -19,24 +22,7 @@ Page({
    */
   onLoad(options) {
     wx.createSelectorQuery()
-    .select('#funcCanvas') // 在 WXML 中填入的 id
-    .fields({ node: true, size: true })
-    .exec((res) => {
-        // Canvas 对象
-        const canvas = res[0].node
-        // 渲染上下文
-        const ctx = canvas.getContext('2d')
-        this.setData({
-          ctx: ctx,
-          canvas: canvas
-        });
-        console.log("1ctx", this.data.ctx, " canvas", canvas);
-    });
-
-    // console.log("ctx", this.data.ctx);
-
-    wx.createSelectorQuery()
-    .select('#funcCanvas') // 在 WXML 中填入的 id
+    .select('#functionCanvas') // 在 WXML 中填入的 id
     .fields({ node: true, size: true })
     .exec((res) => {
         // Canvas 对象
@@ -47,20 +33,146 @@ Page({
         // Canvas 画布的实际绘制宽高
         const width = res[0].width
         const height = res[0].height
-        console.log("Here2", width, height);
+        this.setData({
+          width: width,
+          height: height,
+          ctx: ctx
+        });
 
         // 初始化画布大小
         const dpr = wx.getWindowInfo().pixelRatio
         canvas.width = width * dpr
         canvas.height = height * dpr
         ctx.scale(dpr, dpr)
+    });
 
-        this.setData({
-          width: width,
-          height: height
-        });
-        console.log("Here", this.data.width, this.data.height);
-        // this.drawGrid(10, 10);
+  },
+
+  onFunctionSelect(e) {
+    const index = e.detail.value; // 获取选择的下标
+    this.setData({
+      selectedFunction: this.data.functionList[index],
+      customExpression: '', // 清空自定义表达式
+    });
+  },
+
+  clear() {
+    wx.createSelectorQuery()
+    .select('#functionCanvas') // 在 WXML 中填入的 id
+    .fields({ node: true, size: true })
+    .exec((res) => {
+        // Canvas 对象
+        const canvas = res[0].node
+        // 渲染上下文
+        const ctx = canvas.getContext('2d')
+
+        // Canvas 画布的实际绘制宽高
+        const width = res[0].width
+        const height = res[0].height
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.beginPath();
+    });
+  },
+
+  // 处理自定义输入
+  onCustomInput(e) {
+    this.setData({
+      customExpression: e.detail.value,
+    });
+  },
+
+  drawFunction() {
+    // const math = require('mathjs');
+
+    const expression = this.data.functionExpression;
+    const func = this.data.selectedFunction;
+    const customFunc = this.data.customExpression;
+    if (func == "" && customFunc == "") {
+      wx.showToast({
+        title: '请选择函数表达式',
+        icon: 'none',
+      });
+      return;
+    }
+
+    if (func == "" && customFunc != "") {
+      customFunc = customFunc.replace(/\s+/g, "");
+      wx.showToast({
+        title: '暂时不支持自定义表达式, 稍等作者有空添加',
+        icon: 'none',
+      });
+      return;
+    }
+
+    try {
+      const context = this.data.ctx;
+      const width = this.data.width; // 假设 canvas 的宽度
+      const height = this.data.height; // 假设 canvas 的高度
+
+      // 绘制坐标轴
+      context.strokeStype = '#cccccc';
+      context.lineWidth = 1;
+      context.moveTo(0, height / 2);
+      context.lineTo(width, height / 2); // X 轴
+      context.moveTo(width / 2, 0);
+      context.lineTo(width / 2, height); // Y 轴
+      context.stroke();
+
+      // 绘制函数图像
+      context.strokeStype = '#4A90E2';
+      context.lineWidth = 2;
+
+      const step = 0.05; // 步长，决定图像精度
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const scale = 30; // 缩放比例
+      console.log("here");
+      for (let x = -width / 2; x < width / 2; x += step) {
+        const xVal = x / scale;
+        
+        let yVal = 0;
+        // console.log("xVal", xVal, "func:", this.data.selectedFunction);
+        if (func == "sin(x)") {
+          yVal = Math.sin(xVal);
+        } else if (func == "cos(x)") {
+          yVal = Math.cos(xVal);
+        } else if (func == "tan(x)") {
+          yVal = Math.tan(xVal);
+        } else if (func == "log(x)") {
+          yVal = Math.log(x);
+        } else if (func == "exp(x)") {
+          yVal = Math.exp(xVal);
+        } else if (func == "x^2") { 
+          yVal = Math.pow(xVal, 2);
+        } else if (func == "x^3") {
+          yVal = Math.pow(xVal, 3);
+        }
+        // console.log("for xVal:", xVal, "yVal", yVal);
+        const xPixel = centerX + x;
+        const yPixel = centerY - yVal * scale;
+
+        if (x === -width / 2) {
+          context.moveTo(xPixel, yPixel);
+        } else {
+          context.lineTo(xPixel, yPixel);
+        }
+      }
+
+      context.stroke();
+      // context.draw();
+    } catch (error) {
+      wx.showToast({
+        title: '表达式有误，请检查',
+        icon: 'none',
+      });
+      console.log(error);
+    }
+  },
+
+  onFunctionInput(e) {
+    this.setData({
+      functionExpression: e.detail.value,
     });
   },
 
@@ -160,7 +272,7 @@ Page({
 
   clearCanvas: function () {
     wx.createSelectorQuery()
-    .select('#funcCanvas') // 在 WXML 中填入的 id
+    .select('#functionCanvas') // 在 WXML 中填入的 id
     .fields({ node: true, size: true })
     .exec((res) => {
         // Canvas 对象

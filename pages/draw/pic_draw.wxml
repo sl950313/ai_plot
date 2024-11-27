@@ -1,16 +1,42 @@
-<!--pages/draw/pic_draw.wxml-->
-<!-- <text>pages/draw/pic_draw.wxml</text> -->
-
-
 <view class="container">
-  <!-- <canvas canvas-id="myCanvas" style="width: 100%; height: 100%;"></canvas> -->
-  <canvas id="picCanvas" type="2d" class="pic_canvas_style" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend" />
-  
-  <view class="save_clear">
-    <button bind:tap="loadImg">加载图片</button>
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">GIF 图生成器</text>
   </view>
-  <view class="save_clear">
-    <button bind:tap="saveImg">保存</button>
-    <button bind:tap="clearCanvas">清空</button>
+
+  <!-- 图片上传 -->
+  <view class="upload-section">
+    <button bindtap="chooseImages" class="upload-btn">选择图片</button>
+    <scroll-view class="preview-section" scroll-x>
+      <block wx:for="{{selectedImages}}" wx:key="*this">
+        <image class="preview-img" src="{{item}}" />
+      </block>
+    </scroll-view>
+  </view>
+
+  <!-- 配置参数 -->
+  <view class="settings">
+    <view class="setting-item">
+      <text class="setting-label">帧间隔 (ms):</text>
+      <input class="setting-input" type="number" value="{{frameInterval}}" bindinput="updateFrameInterval" />
+    </view>
+    <view class="setting-item">
+      <text class="setting-label">循环次数:</text>
+      <picker mode="selector" range="{{loopOptions}}" value="{{loopIndex}}" bindchange="updateLoopCount">
+        <view class="picker">{{loopOptions[loopIndex]}}</view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <button bindtap="generateGif" class="generate-btn" disabled="{{!selectedImages.length}}">生成 GIF</button>
+    <button bindtap="saveGif" class="save-btn" disabled="{{!generatedGifUrl}}">保存 GIF</button>
+  </view>
+
+  <!-- 生成的 GIF 预览 -->
+  <view wx:if="{{generatedGifUrl}}" class="gif-preview">
+    <text class="preview-title">生成的 GIF:</text>
+    <image class="gif-img" src="{{generatedGifUrl}}" />
   </view>
 </view>

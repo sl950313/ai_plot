@@ -14,6 +14,7 @@ Page({
     canvas: null,
     picPath: null,
     isDrawing: false,
+    undoPic: false,
     startX: 0,
     startY: 0,
     showBrushOptions: true,
@@ -156,6 +157,7 @@ Page({
         canvas.height = height * dpr
         ctx.scale(dpr, dpr)
     });
+    // console.log("undoPic:", this.data.undoPic);
   },
 
   showColorPicker: function () {
@@ -289,14 +291,19 @@ Page({
     const { ctx, startX, startY } = this.data;
     ctx.clearRect(0, 0, this.data.width, this.data.height);
 
-    console.log("clear ok");
+    console.log("clear ok", this.data.picPath);
     // for (var i = 0; i < 1000000; ++i) {
     //   //
     // }
 
     // await sleep(1000);
 
-    this.loadImageToCanvas(this.data.picPath);
+    console.log("plot image");
+    if (this.data.picPath) {
+      this.loadImageToCanvas(this.data.picPath);
+    }
+
+    // console.log("plot path undoPic", this.data.undoPic);
 
     for (const path of newHistory) {
       console.log("path:", path);
@@ -334,7 +341,7 @@ Page({
   },
 
   loadImageToCanvas: function(imagePath) {
-    console.log("loadImageToCanvas");
+    console.log("loadImageToCanvas", imagePath);
     const { canvas, ctx } = this.data;
 
     const img = canvas.createImage();
@@ -361,27 +368,32 @@ Page({
       console.log("drawImage", offsetX, offsetY, displayWidth, displayHeight, scale);
 
       ctx.drawImage(img, offsetX, offsetY, displayWidth, displayHeight);
+      // ctx.draw(true);
       // ctx.drawImage(img, 0, 0);
+      console.log("drawImage undoPic1", this.data.undoPic);
+      this.data.undoPic = true;
+      console.log("drawImage undoPic2", this.data.undoPic);
     };
 
     img.onerror = (err) => {
       console.error("图片加载失败：", err);
     };
+    
   },
 
-  loadImg2: function() {
-    let canvas = this.data.canvas;
-    let ctx = this.data.ctx;
-    const img = canvas.createImage();
-    console.log(ctx, canvas, img);
-    img.onLoad = () => {
-      ctx.drawImage(img, 0, 0);
-      console.log("Here onLoad");
-    }
-    img.src = "https://img2.baidu.com/it/u=1208038369,1789115807&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=667";
-    console.log("img.src:");
-    ctx.drawImage(img, 0, 0);
-  },
+  // loadImg2: function() {
+  //   let canvas = this.data.canvas;
+  //   let ctx = this.data.ctx;
+  //   const img = canvas.createImage();
+  //   console.log(ctx, canvas, img);
+  //   img.onLoad = () => {
+  //     ctx.drawImage(img, 0, 0);
+  //     console.log("Here onLoad");
+  //   }
+  //   img.src = "https://img2.baidu.com/it/u=1208038369,1789115807&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=667";
+  //   console.log("img.src:");
+  //   ctx.drawImage(img, 0, 0);
+  // },
 
   clearCanvas: function () {
     wx.createSelectorQuery()
@@ -400,32 +412,61 @@ Page({
         ctx.clearRect(0, 0, width, height);
         ctx.beginPath();
     });
+    this.data.picPath = null;
   },
 
   saveImg: function () {
     const {canvas, ctx, startX, startY } = this.data;
     console.log("saveImg ctx", ctx);
     console.log("saveImg", "canvas", canvas)
-    wx.canvasToTempFilePath({
-      canvas,
-      success: res => {
-          // 生成的图片临时文件路径
-          const tempFilePath = res.tempFilePath
-          console.log(tempFilePath)
-          // wx.setStorageSync('test', tempFilePath)
-          wx.saveImageToPhotosAlbum({
-            filePath: tempFilePath,
-            success: (res) => {
-              console.log("save png success", res);
-            },
-            fail: (err) => {
 
-            },
-            complete: (res) => {
-
-            }
-          })
+    wx.authorize({
+      scope: 'scope.writePhotosAlbum',
+      success() {
+        console.log('用户授权成功');
+        // 继续执行保存图片的操作
+        // saveImageToAlbum();
+        wx.canvasToTempFilePath({
+          canvas,
+          success: res => {
+              // 生成的图片临时文件路径
+              const tempFilePath = res.tempFilePath
+              console.log(tempFilePath)
+              // wx.setStorageSync('test', tempFilePath)
+              wx.saveImageToPhotosAlbum({
+                filePath: tempFilePath,
+                success: (res) => {
+                  console.log("save png success", res);
+                  wx.showToast({
+                    title: '图片已保存到相册', // 提示文本
+                    icon: 'success', // 图标样式
+                    duration: 2000, // 显示时间（单位：毫秒）
+                  });
+                },
+                fail: (err) => {
+                  wx.showToast({
+                    title: '保存失败，请重试',
+                    icon: 'none',
+                    duration: 2000,
+                  });
+                },
+                complete: (res) => {
+    
+                }
+              })
+          },
+      })
       },
-  })
+      fail() {
+        console.log('用户授权失败');
+        wx.showToast({
+          title: '请授权保存图片',
+          icon: 'none',
+        });
+      }
+    });
+    
+
+    
   }
 });

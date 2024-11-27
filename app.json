@@ -24,6 +24,11 @@
   "permission": {
     "scope.userLocation": {
       "desc": "展示用户信息"
+    },
+    "scope": {
+      "writePhotosAlbum": {
+        "desc": "你的应用需要保存图片到相册"
+      }
     }
   },
   "tabBar": {

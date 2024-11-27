@@ -1,6 +1,9 @@
-<!--pages/self/infos/contact.wxml-->
-<!-- <text>pages/self/infos/contact.wxml</text> -->
-
 <view class="container">
-  
+  <view class="text">请大力联系作者，作者懒得抽筋！</view>
+  <image 
+    src="../../../images/wechat_scan_code.jpg"
+    class="image" 
+    show-menu-by-longpress="1" 
+    bindtap="saveImage">
+  </image>
 </view>

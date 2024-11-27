@@ -62,6 +62,7 @@ page {
   justify-content: space-between; /* 平分间隔 */
   gap: 10px; /* 按钮之间的间距 */
   margin-top: 10px; /* 工具栏顶部间距 */
+  margin-bottom: 30px;
 }
 
 .width-button {

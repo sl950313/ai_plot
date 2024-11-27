@@ -65,6 +65,18 @@ Page({
     });
   },
 
+  contactUs: function() {
+    wx.navigateTo({
+      url: './infos/contact',
+    });
+  },
+
+  projectBrief: function() {
+    wx.navigateTo({
+      url: './infos/feedback',
+    });
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

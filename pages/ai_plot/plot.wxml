@@ -1,9 +1,31 @@
-<!--pages/ai_plot/plot.wxml-->
-<view class="container1">
-  <!-- <view class="save_clear">
-    <input class="input" bindinput="getInputValue" name="remark" placeholder="请输入将要生成的语句" auto-focus="true"/>
-    <button bind:tap="onclickGeneral">生成</button>
-  </view> -->
-  <view class="text">请大力联系作者，作者懒得抽筋！</view>
-  <image src="../../images/wechat_scan_code.jpg" class="image" show-menu-by-longpress="1"></image>
+<view class="container">
+  <!-- 标题 -->
+  <view class="title">
+    <text>AI 文字生成图片</text>
+  </view>
+
+  <!-- 文字输入框 -->
+  <view class="input-area">
+    <input class="text-input" placeholder="请输入文字描述生成图片" bindinput="onInputChange" />
+  </view>
+
+  <!-- 生成按钮 -->
+  <view class="button-area">
+    <button bindtap="generateImage" class="generate-button">生成图片</button>
+  </view>
+
+  <!-- 加载提示 -->
+  <view wx:if="{{isLoading}}" class="loading">
+    <text>正在生成，请稍等...</text>
+  </view>
+
+  <!-- 图片展示 -->
+  <view wx:if="{{generatedImage}}" class="image-area">
+    <image src="{{generatedImage}}" mode="aspectFit" class="generated-image"></image>
+  </view>
+
+  <!-- 下载按钮 -->
+  <view wx:if="{{generatedImage}}" class="download-area">
+    <button bindtap="downloadImage" class="download-button">下载图片</button>
+  </view>
 </view>

@@ -22,6 +22,14 @@ Page({
 
   },
 
+  saveImage() {
+    wx.showToast({
+      title: '长按保存二维码',
+      icon: 'none',
+      duration: 2000
+    });
+  },
+
   /**
    * 生命周期函数--监听页面显示
    */

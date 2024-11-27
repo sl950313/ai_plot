@@ -1,173 +1,72 @@
-// pages/draw/pic_draw.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-    ctx : null,
-    canvas : null,
-    startX : 0,
-    startY : 0
+    selectedImages: [], // 用户选中的图片
+    frameInterval: 200, // 帧间隔（默认200ms）
+    loopOptions: ['无限', '1次', '2次', '3次'], // 循环次数选项
+    loopIndex: 0, // 默认选中无限循环
+    generatedGifUrl: '', // 生成的 GIF URL
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-    wx.createSelectorQuery()
-    .select('#picCanvas') // 在 WXML 中填入的 id
-    .fields({ node: true, size: true })
-    .exec((res) => {
-        // Canvas 对象
-        const canvas = res[0].node
-        // 渲染上下文
-        const ctx = canvas.getContext('2d')
-        this.setData({
-          ctx: ctx,
-          canvas: canvas
+  // 选择图片
+  chooseImages() {
+    wx.chooseImage({
+      count: 9, // 最多选择 9 张
+      success: (res) => {
+        this.setData({ selectedImages: res.tempFilePaths });
+      },
+    });
+  },
+
+  // 更新帧间隔
+  updateFrameInterval(e) {
+    this.setData({ frameInterval: parseInt(e.detail.value) || 200 });
+  },
+
+  // 更新循环次数
+  updateLoopCount(e) {
+    this.setData({ loopIndex: parseInt(e.detail.value) });
+  },
+
+  // 调用后台生成 GIF
+  generateGif() {
+    wx.showLoading({ title: '生成中...' });
+
+    wx.uploadFile({
+      url: 'https://106.14.113.34/generate-gif', // 后端接口
+      filePath: this.data.selectedImages[0], // 示例，仅上传第一张图片
+      name: 'file',
+      formData: {
+        frameRate: this.data.frameInterval,
+        loopCount: this.data.loopIndex === 0 ? 0 : this.data.loopIndex,
+      },
+      success: (res) => {
+        const { gifUrl } = JSON.parse(res.data);
+        this.setData({ generatedGifUrl: gifUrl });
+        wx.hideLoading();
+      },
+      fail: (err) => {
+        console.error('生成失败:', err);
+        wx.hideLoading();
+        wx.showToast({
+          title: '生成失败，抱歉, 当前功能暂不支持哦',
+          icon: 'none',
+          duration: 2500,
         });
-        console.log("pic ctx", this.data.ctx, " canvas", canvas);
-    });
-
-    // console.log("ctx", this.data.ctx);
-
-    wx.createSelectorQuery()
-    .select('#picCanvas') // 在 WXML 中填入的 id
-    .fields({ node: true, size: true })
-    .exec((res) => {
-        // Canvas 对象
-        const canvas = res[0].node
-        // 渲染上下文
-        const ctx = canvas.getContext('2d')
-
-        // Canvas 画布的实际绘制宽高
-        const width = res[0].width
-        const height = res[0].height
-
-        // 初始化画布大小
-        const dpr = wx.getWindowInfo().pixelRatio
-        canvas.width = width * dpr
-        canvas.height = height * dpr
-        ctx.scale(dpr, dpr)
+      },
     });
   },
 
-  loadImg: function() {
-    let canvas = this.data.canvas;
-    let ctx = this.data.ctx;
-    const img = canvas.createImage();
-    console.log(ctx, canvas, img);
-    img.onLoad = () => {
-      ctx.drawImage(img, 0, 0);
-      console.log("Here onLoad");
-    }
-    img.src = "https://img2.baidu.com/it/u=1208038369,1789115807&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=667";
-    console.log("img.src:");
-    ctx.drawImage(img, 0, 0);
-
-  },
-
-  touchstart: function (e) {
-    this.setData({
-      isDrawing: true,
-      startX: e.touches[0].x,
-      startY: e.touches[0].y
-    });
-    console.log("startX:", this.data.startX, " startY:", this.data.startY)
-  },
-
-  touchmove: function (e) {
-    console.log("touchMove", " ctx", this.data.ctx, " position", e.touches[0]);
-    if (!this.data.isDrawing) return;
-
-    const { ctx, startX, startY } = this.data;
-    const currentX = e.touches[0].x;
-    const currentY = e.touches[0].y;
-
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(currentX, currentY);
-    ctx.stroke();
-    // ctx.draw();
-
-    this.setData({
-      startX: currentX,
-      startY: currentY
+  // 保存 GIF 到相册
+  saveGif() {
+    wx.downloadFile({
+      url: this.data.generatedGifUrl,
+      success: (res) => {
+        wx.saveImageToPhotosAlbum({
+          filePath: res.tempFilePath,
+          success: () => wx.showToast({ title: '保存成功' }),
+          fail: () => wx.showToast({ title: '保存失败', icon: 'error' }),
+        });
+      },
     });
   },
-
-  touchend: function () {
-    console.log("touchEnd")
-    this.setData({
-      isDrawing: false
-    });
-  },
-
-  clearCanvas: function () {
-    wx.createSelectorQuery()
-    .select('#picCanvas') // 在 WXML 中填入的 id
-    .fields({ node: true, size: true })
-    .exec((res) => {
-        // Canvas 对象
-        const canvas = res[0].node
-        // 渲染上下文
-        const ctx = canvas.getContext('2d')
-
-        // Canvas 画布的实际绘制宽高
-        const width = res[0].width
-        const height = res[0].height
-
-        ctx.clearRect(0, 0, width, height);
-        ctx.beginPath();
-    });
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+});

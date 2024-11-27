@@ -1,2 +1,32 @@
-<!--pages/self/infos/feedback.wxml-->
-<text>pages/self/infos/feedback.wxml</text>
+<view class="container">
+  <!-- 作品简介部分 -->
+  <view class="section">
+    <text class="section-title">作品简介</text>
+    <view class="section-content">
+      <text class="description">
+        欢迎使用这款绘画助手小程序！它集成了多种创作工具，帮助您随时随地轻松绘画，无需专业设备也能实现您的创意。这是为每一位热爱艺术的人精心打造的灵感之源！
+      </text>
+    </view>
+  </view>
+
+  <!-- 作者简介部分 -->
+  <view class="section">
+    <text class="section-title">作者简介</text>
+    <view class="author-info">
+      <image src="../../../images/微信头像.jpg" class="author-avatar"></image>
+      <view class="author-details">
+        <text class="author-name">文光居士</text>
+        <text class="author-bio">
+          资深开发者，热爱艺术与科技，致力于将技术与创意相结合。这款小程序是他的独立作品，旨在为用户提供简单实用的绘画工具。
+        </text>
+        <text class="author-contact">联系作者:</text>
+        <image 
+          src="../../../images/wechat_scan_code.jpg"
+          class="author-weixin" 
+          show-menu-by-longpress="1" 
+          bindtap="saveImage">
+        </image>
+      </view>
+    </view>
+  </view>
+</view>

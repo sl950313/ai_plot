@@ -1,15 +1,42 @@
-<!--pages/func_draw/func_draw.wxml-->
 <view class="container">
-  <!-- <canvas canvas-id="myCanvas" style="width: 100%; height: 100%;"></canvas> -->
-  <canvas id="funcCanvas" type="2d" class="func_canvas" bindtouchstart="touchstart" bindtouchmove="touchmove" bindtouchend="touchend" />
-
-  <view class="save_clear">
-    <button bind:tap="startHeartDrawFunc">心形函数</button>
-    <button bind:tap="drawSin4x">Sin4x</button>
+  <!-- 页面标题 -->
+  <view class="header">
+    <text class="title">函数绘图器</text>
   </view>
-  
-  <view class="save_clear">
-    <button bind:tap="saveImg">保存</button>
-    <button bind:tap="clearCanvas">清空</button>
+
+  <view class="input-section">
+  <picker mode="selector" range="{{functionList}}" bindchange="onFunctionSelect">
+    <view class="picker">
+      选择函数: {{selectedFunction}}
+    </view>
+  </picker>
+
+  <!-- 自定义输入框（仅当选择 "自定义" 时显示） -->
+  <view wx:if="{{selectedFunction === '自定义'}}">
+    <input 
+      class="expression-input" 
+      placeholder="请输入自定义表达式" 
+      bindinput="onCustomInput" 
+      value="{{customExpression}}" 
+    />
+  </view>
+  <button class="draw-button" bindtap="drawFunction">绘制图形</button>
+  <button class="draw-button" bindtap="clear">清空</button>
+  </view> 
+
+  <!-- 输入区域 -->
+  <!-- <view class="input-section">
+    <input class="function-input" placeholder="请输入函数表达式 (如: sin(x), x^2)" bindinput="onFunctionInput"/>
+    <button class="draw-button" bindtap="drawFunction">绘制图形</button>
+  </view> -->
+
+  <!-- 绘图区域 -->
+  <view class="canvas-section">
+    <canvas id="functionCanvas" type="2d" class="function-canvas"></canvas>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="tips">
+    <text>支持的表达式包括 sin(x), cos(x), tan(x), log(x), exp(x), 以及多项式等。</text>
   </view>
 </view>
