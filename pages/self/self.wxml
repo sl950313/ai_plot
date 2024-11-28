@@ -10,32 +10,6 @@
   </view>
 
   <view class="my">
-    
-    <!-- <view class="my-item flex-wrp">
-      <view class="myitem-icon flex-item" >
-        <image src="../../images/star.png"></image>
-      </view>
-      <view class="myitem-name flex-item" bind:tap="contactUs">
-        <text>联系我们</text>
-      </view>
-    </view> -->
-    <!-- <view class="my-item flex-wrp">
-      <view class="myitem-icon flex-item" >
-        <image src="../../images/draft.png"></image>
-      </view>
-      <view class="myitem-name flex-item">
-        <text>我的草稿</text>
-      </view>
-    </view> -->
-   
-    <!-- <view class="my-item flex-wrp">
-      <view class="myitem-icon flex-item" >
-        <image src="../../images/book.png"></image>
-      </view>
-      <view class="myitem-name flex-item">
-        <text>我的钱包</text>
-      </view>
-    </view> -->
     <view class="my-item flex-wrp">
       <view class="myitem-icon flex-item" >
         <image src="../../images/live.png"></image>

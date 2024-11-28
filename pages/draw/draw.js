@@ -79,9 +79,9 @@ Page({
   },
 
   setBoxColor: function() {
-    const r = this.data.redValue / 100.0 * 256;
-    const g = this.data.greenValue / 100.0 * 256;
-    const b = this.data.blueValue / 100.0 * 256;
+    const r = Math.floor(this.data.redValue / 100.0 * 256);
+    const g = Math.floor(this.data.greenValue / 100.0 * 256);
+    const b = Math.floor(this.data.blueValue / 100.0 * 256);
     this.setData({
       brushColor: `rgb(${r}, ${g}, ${b})` 
     });
@@ -207,18 +207,16 @@ Page({
     let currentX = startX;
     let currentY = startY;
     this.currentPath = [{currentX, currentY, brushColor, brushWidth}];
-    // const ctx = wx.createCanvasContext('myCanvas', this);
-    // ctx.setStrokeStyle(this.data.brushColor);
-    // ctx.setLineWidth(this.data.brushWidth);
-    // ctx = wx.createCanvasContext('myCanvas', this);
     ctx.lineWidth = this.data.brushWidth
     ctx.brushColor = this.data.brushColor
-    ctx.strokeStype = this.data.brushColor
+    ctx.strokeStyle = this.data.brushColor
+    // ctx.strokeStyle = 'rgb(255,0,0)'
+
     ctx.lineCap = 'round'
 
     ctx.beginPath();
 
-    console.log("startX:", this.data.startX, " startY:", this.data.startY, this.data.brushColor, this.data.brushWidth)
+    console.log("startX:", this.data.startX, " startY:", this.data.startY, this.data.brushColor, this.data.brushWidth, ctx)
   },
 
   touchmove: function (e) {
@@ -281,6 +279,8 @@ Page({
     console.log("plot image");
     if (this.data.picPath) {
       this.loadImageToCanvas(this.data.picPath, this.undoStep2);
+    } else {
+      this.undoStep2();
     }
   },
 
@@ -306,7 +306,7 @@ Page({
       for (let i = 1; i < path.length; i++) {
         ctx.lineWidth = path[i - 1].brushWidth;
         ctx.brushColor = path[i - 1].brushColor;
-        ctx.strokeStype = path[i - 1].brushColor;
+        ctx.strokeStyle = path[i - 1].brushColor;
         ctx.beginPath();
         
         ctx.moveTo(path[i - 1].currentX, path[i - 1].currentY);
