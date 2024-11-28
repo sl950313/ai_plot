@@ -1,5 +1,10 @@
 /**app.wxss**/
 
+page {
+  overflow: hidden; /* 禁止页面滚动 */
+  /* height: 100%; 确保页面高度和屏幕一致 */
+}
+
 .container {
   height: 100%;
   width: 100%;
