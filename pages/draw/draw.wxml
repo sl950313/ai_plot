@@ -38,7 +38,7 @@
     <button bind:tap="clearCanvas" class='width-button'>清空</button>
     <button bind:tap="setBrushWidth" class='width-button'>画笔</button>
     <button bind:tap="setBrushColor" class='width-button'>颜色</button>
-    <button bind:tap="undo" class='width-button'>撤回</button>
+    <button bind:tap="undoStep1" class='width-button'>撤回</button>
     <!-- <button bind:tap="eraser" class='width-button'>橡皮</button> -->
     <button bind:tap="loadImg" class='width-button'>涂鸦图片</button>
   </view>

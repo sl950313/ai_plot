@@ -1,9 +1,15 @@
 <view class="container">
-  <view class="text">请大力联系作者，作者懒得抽筋！</view>
-  <image 
-    src="../../../images/wechat_scan_code.jpg"
-    class="image" 
-    show-menu-by-longpress="1" 
-    bindtap="saveImage">
-  </image>
+  <view class="title">问题反馈</view>
+  
+  <!-- 输入框：用户反馈内容 -->
+  <textarea class="textarea" placeholder="请输入您的反馈内容" bindinput="onFeedbackInput"></textarea>
+  
+  <!-- 输入框：联系方式（可选） -->
+  <view class="contact-section">
+    <text style="font-size: 15px;">联系方式（可选）：</text>
+    <input class="contact-input" placeholder="请输入您的邮箱或电话" bindinput="onContactInput" />
+  </view>
+  
+  <!-- 提交按钮 -->
+  <button class="submit-btn" bindtap="onSubmit">提交反馈</button>
 </view>

@@ -273,11 +273,18 @@ Page({
     console.log("canvashistory size:", this.data.canvasHistory);
   },
 
-  sleep: function(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  undoStep1: function() {
+    const { ctx, startX, startY } = this.data;
+    ctx.clearRect(0, 0, this.data.width, this.data.height);
+
+    console.log("clear ok", this.data.picPath);
+    console.log("plot image");
+    if (this.data.picPath) {
+      this.loadImageToCanvas(this.data.picPath, this.undoStep2);
+    }
   },
 
-  undo: function() {
+  undoStep2: function() {
     console.log("undo");
     if (this.data.canvasHistory.length === 0) return;
 
@@ -289,21 +296,10 @@ Page({
     console.log("canvashistory size:", this.data.canvasHistory);
 
     const { ctx, startX, startY } = this.data;
-    ctx.clearRect(0, 0, this.data.width, this.data.height);
+    // ctx.clearRect(0, 0, this.data.width, this.data.height);
 
     console.log("clear ok", this.data.picPath);
-    // for (var i = 0; i < 1000000; ++i) {
-    //   //
-    // }
-
-    // await sleep(1000);
-
     console.log("plot image");
-    if (this.data.picPath) {
-      this.loadImageToCanvas(this.data.picPath);
-    }
-
-    // console.log("plot path undoPic", this.data.undoPic);
 
     for (const path of newHistory) {
       console.log("path:", path);
@@ -322,6 +318,10 @@ Page({
     }
   },
 
+  plotPath: function() {
+
+  },
+
   loadImg: function() {
     wx.chooseImage({
       count: 1,
@@ -329,7 +329,7 @@ Page({
       sourceType: ["album", "camera"],
       success: (res) => {
         const tempFilePath = res.tempFilePaths[0]; // 获取临时文件路径
-        this.loadImageToCanvas(tempFilePath);
+        this.loadImageToCanvas(tempFilePath, null);
         this.setData({
           picPath: tempFilePath
         });
@@ -340,7 +340,7 @@ Page({
     });
   },
 
-  loadImageToCanvas: function(imagePath) {
+  loadImageToCanvas: function(imagePath, callback) {
     console.log("loadImageToCanvas", imagePath);
     const { canvas, ctx } = this.data;
 
@@ -373,6 +373,9 @@ Page({
       console.log("drawImage undoPic1", this.data.undoPic);
       this.data.undoPic = true;
       console.log("drawImage undoPic2", this.data.undoPic);
+      if (callback) {
+        callback();
+      }
     };
 
     img.onerror = (err) => {

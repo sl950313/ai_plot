@@ -1,74 +1,50 @@
-// pages/self/infos/contact.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    feedbackContent: '', // 反馈内容
+    contactInfo: '',     // 联系方式
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  saveImage() {
-    wx.showToast({
-      title: '长按保存二维码',
-      icon: 'none',
-      duration: 2000
+  // 监听反馈内容输入
+  onFeedbackInput(e) {
+    this.setData({
+      feedbackContent: e.detail.value
     });
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
+  // 监听联系方式输入
+  onContactInput(e) {
+    this.setData({
+      contactInfo: e.detail.value
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
+  // 提交反馈
+  onSubmit() {
+    const { feedbackContent, contactInfo } = this.data;
 
-  },
+    if (!feedbackContent.trim()) {
+      wx.showToast({
+        title: '反馈内容不能为空',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+    // 模拟发送反馈到服务器
+    wx.showLoading({ title: '提交中...' });
+    setTimeout(() => {
+      wx.hideLoading();
+      wx.showToast({
+        title: '提交成功',
+        icon: 'success',
+        duration: 2000
+      });
+      // 重置输入框
+      this.setData({
+        feedbackContent: '',
+        contactInfo: ''
+      });
+    }, 1000);
   }
-})
+});

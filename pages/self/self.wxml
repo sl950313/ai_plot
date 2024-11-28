@@ -36,14 +36,14 @@
         <text>我的钱包</text>
       </view>
     </view> -->
-    <!-- <view class="my-item flex-wrp">
+    <view class="my-item flex-wrp">
       <view class="myitem-icon flex-item" >
         <image src="../../images/live.png"></image>
       </view>
-      <view class="myitem-name flex-item">
+      <view class="myitem-name flex-item" bind:tap="feedback">
         <text>问题反馈</text>
       </view>
-    </view> -->
+    </view>
     <view class="my-item flex-wrp">
       <view class="myitem-icon flex-item" >
         <image src="../../images/zhi.png"></image>
