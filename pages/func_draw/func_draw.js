@@ -96,8 +96,8 @@ Page({
       return;
     }
 
-    if (func == "" && customFunc != "") {
-      customFunc = customFunc.replace(/\s+/g, "");
+    if (customFunc != "") {
+      // customFunc = customFunc.replace(/\s+/g, "");
       wx.showToast({
         title: '暂时不支持自定义表达式, 稍等作者有空添加',
         icon: 'none',

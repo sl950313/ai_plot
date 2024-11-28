@@ -4,31 +4,26 @@
     <text class="title">函数绘图器</text>
   </view>
 
-  <view class="input-section">
-  <picker mode="selector" range="{{functionList}}" bindchange="onFunctionSelect">
-    <view class="picker">
-      选择函数: {{selectedFunction}}
-    </view>
-  </picker>
-
-  <!-- 自定义输入框（仅当选择 "自定义" 时显示） -->
-  <view wx:if="{{selectedFunction === '自定义'}}">
-    <input 
-      class="expression-input" 
-      placeholder="请输入自定义表达式" 
-      bindinput="onCustomInput" 
-      value="{{customExpression}}" 
-    />
-  </view>
-  <button class="draw-button" bindtap="drawFunction">绘制图形</button>
-  <button class="draw-button" bindtap="clear">清空</button>
-  </view> 
-
   <!-- 输入区域 -->
-  <!-- <view class="input-section">
-    <input class="function-input" placeholder="请输入函数表达式 (如: sin(x), x^2)" bindinput="onFunctionInput"/>
-    <button class="draw-button" bindtap="drawFunction">绘制图形</button>
-  </view> -->
+  <view class="input-section">
+    <picker mode="selector" range="{{functionList}}" bindchange="onFunctionSelect">
+      <view class="picker">
+        选择函数: {{selectedFunction}}
+      </view>
+    </picker>
+
+    <!-- 自定义输入框（仅当选择 "自定义" 时显示） -->
+    <view wx:if="{{selectedFunction === '自定义'}}">
+      <input 
+        class="expression-input" 
+        placeholder="请输入自定义表达式" 
+        bindinput="onCustomInput" 
+        value="{{customExpression}}" 
+      />
+    </view>
+    <button class="action-button" bindtap="drawFunction">绘制图形</button>
+    <button class="action-button clear" bindtap="clear">清空</button>
+  </view>
 
   <!-- 绘图区域 -->
   <view class="canvas-section">
