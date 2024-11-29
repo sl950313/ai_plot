@@ -1,13 +1,13 @@
 <view class="container more">
   <!-- 用户信息区域 -->
-  <view class="user flex-wrp">
+  <!-- <view class="user flex-wrp">
     <button class="avatar" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
       <image class="avatar-image"  src="{{avatarUrl}}"></image>
     </button>
     <view class="user-info flex-item">
       <input type="nickname" class="nickname" placeholder="请输入昵称" bindblur="changeNickName"/>
     </view>
-  </view>
+  </view> -->
 
   <view class="my">
     <view class="my-item flex-wrp">

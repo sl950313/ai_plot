@@ -19,8 +19,8 @@
   <view class="item" bindtap="toPicDraw">
     <text>绘制动画</text>
   </view>
-
+<!-- 
   <view class="item" bindtap="toAIDraw">
     <text>ai绘画</text>
-  </view>
+  </view> -->
 </view>
